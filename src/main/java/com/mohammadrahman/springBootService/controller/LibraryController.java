@@ -60,4 +60,14 @@ public class LibraryController {
         return repository.findAllByAuthor(authorname);
 
     }
+    @PutMapping("/updateBook/{id}")
+    public ResponseEntity<Library> updateBook(@PathVariable(value="id") String id, @RequestBody Library library) {
+         Library existingBook = repository.findById(id).get();
+         existingBook.setAisle(library.getAisle());
+         existingBook.setAuthor(library.getAuthor());
+         existingBook.setBook_name(library.getBook_name());
+         repository.save(existingBook);
+         return new ResponseEntity<Library>(existingBook, HttpStatus.OK);
+
+    }
 }
