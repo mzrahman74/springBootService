@@ -70,4 +70,17 @@ public class LibraryController {
          return new ResponseEntity<Library>(existingBook, HttpStatus.OK);
 
     }
+    @DeleteMapping("/deleteBook")
+    public ResponseEntity<String> deleteBookById(@RequestBody Library library) {
+        try {
+            Library libdelete = repository.findById(library.getId()).get();
+            repository.delete(libdelete);
+            return new ResponseEntity<>("Book is deleted", HttpStatus.CREATED);
+
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
+        }
+
+    }
 }
