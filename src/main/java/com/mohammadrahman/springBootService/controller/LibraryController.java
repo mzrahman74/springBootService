@@ -83,4 +83,9 @@ public class LibraryController {
         }
 
     }
+    @GetMapping("/getAllBooks")
+    public ResponseEntity<List<Library>> GetAllBooks() {
+    List<Library> allBooks = repository.findAll();
+    return  new ResponseEntity<>(allBooks, HttpStatus.OK);
+    }
 }
