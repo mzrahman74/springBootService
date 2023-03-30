@@ -25,12 +25,13 @@ public class LibraryController {
 
     @PostMapping("/addBook")
     public ResponseEntity addBookImplementation(@RequestBody Library library) {
-      String id =  service.buildId(library.getIsbn(), library.getAisle());
+      String id =  service.buildId(library.getIsbn(), library.getAisle()); // dependency mock
         AddResponse addResponse = new AddResponse();
-        if(!service.checkBookAlreadyExist(id)) {
+        if(!service.checkBookAlreadyExist(id)) // mock
+        {
             logger.info("Books do not exist so creating one");
             library.setId(id);
-            repository.save(library);
+            repository.save(library); // mock
             HttpHeaders headers = new HttpHeaders();
             headers.add("unique", id);
             addResponse.setMsg("Success Book is Added");
@@ -39,7 +40,7 @@ public class LibraryController {
         } else {
 
             logger.info("Book exist so skipping creation");
-            addResponse.setId("Books already exist");
+            addResponse.setMsg("Books already exist");
             addResponse.setId(id);
             return new ResponseEntity<AddResponse>(addResponse,HttpStatus.ACCEPTED);
         }
@@ -75,6 +76,7 @@ public class LibraryController {
         try {
             Library libdelete = repository.findById(library.getId()).get();
             repository.delete(libdelete);
+            logger.info("Book is deleted.");
             return new ResponseEntity<>("Book is deleted", HttpStatus.CREATED);
 
         } catch (Exception e) {
