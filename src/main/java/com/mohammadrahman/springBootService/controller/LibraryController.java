@@ -63,7 +63,8 @@ public class LibraryController {
     }
     @PutMapping("/updateBook/{id}")
     public ResponseEntity<Library> updateBook(@PathVariable(value="id") String id, @RequestBody Library library) {
-         Library existingBook = repository.findById(id).get();
+        // Library existingBook = repository.findById(id).get();
+         Library existingBook = service.getBookById(id);
          existingBook.setAisle(library.getAisle());
          existingBook.setAuthor(library.getAuthor());
          existingBook.setBook_name(library.getBook_name());
