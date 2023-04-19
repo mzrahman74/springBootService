@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.then;import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.then;import static org.mockito.Mockito.doNothing;import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -108,8 +108,19 @@ class SpringBootServiceApplicationTests {
         .andExpect(
             content()
                 .json(
-                    "{\"book_name\":\"Boot\",\"id\":\"fcn322\",\"isbn\":\"fcn\",\"aisle\":321,\"author\":\"Nuhaa Rahman\"}"));
+                    "{\"book_name\":\"Boot\",\"id\":\"fcm321\",\"isbn\":\"fcm\",\"aisle\":321,\"author\":\"Nuhaa Rahman\"}"));
 	}
+	@Test
+	public void deleteBookControllerTest()throws Exception {
+	  when(libraryService.getBookById(any())).thenReturn(buildLibrary());
+	  doNothing().when(repository).delete(buildLibrary());
+    this.mockMvc.perform(
+        delete("/deleteBook")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"id\": \"fcn322\"}")).andDo(print()).andExpect(status().isCreated()).andExpect(content().string("Book is deleted"));
+	}
+
+
 	public Library buildLibrary() {
 	  Library lib = new Library();
 	  lib.setAisle(322);

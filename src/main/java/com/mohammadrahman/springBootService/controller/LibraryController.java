@@ -66,6 +66,8 @@ public class LibraryController {
         // Library existingBook = repository.findById(id).get();
          Library existingBook = service.getBookById(id);
          existingBook.setAisle(library.getAisle());
+         existingBook.setIsbn(library.getIsbn());
+         existingBook.setId(library.getId());
          existingBook.setAuthor(library.getAuthor());
          existingBook.setBook_name(library.getBook_name());
          repository.save(existingBook);
@@ -75,7 +77,8 @@ public class LibraryController {
     @DeleteMapping("/deleteBook")
     public ResponseEntity<String> deleteBookById(@RequestBody Library library) {
         try {
-            Library libdelete = repository.findById(library.getId()).get();
+           // Library libdelete = repository.findById(library.getId()).get();
+            Library libdelete = service.getBookById(library.getId());
             repository.delete(libdelete);
             logger.info("Book is deleted.");
             return new ResponseEntity<>("Book is deleted", HttpStatus.CREATED);
